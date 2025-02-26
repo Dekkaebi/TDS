@@ -10,8 +10,10 @@ public class PlayerController : MonoBehaviour {
     public float rotationSpeed = 360;
     public float walkSpeed = 5;
     public float runSpeed = 8;
+    private float acceleration = 5;
 
     private Quaternion targetRotation;
+    private Vector3 Velocity;
 
     public Gun gun;
     private CharacterController controller;
@@ -38,7 +40,8 @@ public class PlayerController : MonoBehaviour {
         
 
         Vector3 input = new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical"));
-        Vector3 motion = input;
+        Velocity = Vector3.MoveTowards(Velocity, input, acceleration * Time.deltaTime);
+        Vector3 motion = Velocity;
         motion *= (Mathf.Abs(input.x) == 1 && Mathf.Abs(input.z) == 1) ? .7f : 1; // отсутствие ускорения при движении под угом
         motion *= (Input.GetButton("Run")) ? runSpeed : walkSpeed;
         motion += Vector3.up * -8;

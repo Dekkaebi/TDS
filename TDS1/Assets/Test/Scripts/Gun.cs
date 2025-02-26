@@ -4,7 +4,9 @@ using UnityEngine.Audio;
 [RequireComponent (typeof (AudioSource))]
 public class Gun : MonoBehaviour {
 
+    public LayerMask collisianMask;
     public float rpm; // кол-во выстрелов в минуту
+    public float damage = 5;
 
     public Transform spawn;
 
@@ -24,6 +26,10 @@ public class Gun : MonoBehaviour {
             if (Physics.Raycast(ray, out hit, shotDistance)) // коллизия 
             {
                 shotDistance = hit.distance;
+
+                if (hit.collider.GetComponent<Entity>()) {
+                    hit.collider.GetComponent<Entity>().TakeDamage(damage);
+                }
             }
             nextShootTime = Time.time + secondBetweenShots;
             Debug.DrawRay(ray.origin, ray.direction * shotDistance, Color.red, 1); // проверка стрельбы(включи Gizmo)
