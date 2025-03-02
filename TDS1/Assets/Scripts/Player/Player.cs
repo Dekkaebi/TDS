@@ -1,6 +1,8 @@
 using UnityEngine;
 using System.Collections;
 using UnityEngine.UIElements;
+using UnityEngine.Animations;
+using System.Xml.Serialization;
 
 public class Player : MonoBehaviour
 {
@@ -22,6 +24,7 @@ public class Player : MonoBehaviour
     [Header("Debug")]
     public bool ShowDebugStats;
     private Rigidbody _rb;
+    private Transform tf;
 
     //movement vars
     private Vector3 _moveVelocity;
@@ -56,12 +59,14 @@ public class Player : MonoBehaviour
     private void Awake()
     {
         _rb = GetComponent<Rigidbody>();
+        tf = GetComponent<Transform>();
     }
 
     private void Update()
     {
         //CountTimers();
         //JumpChecks();
+        Rotation();
     }
 
     private void FixedUpdate()
@@ -479,4 +484,34 @@ public class Player : MonoBehaviour
     #endregion
 
     */
+    
+    #region Rotate
+
+    void Rotation()
+    {
+        Ray ray = Camera.main.ScreenPointToRay(InputManager.Aim);
+        Plane groundPlane = new Plane(Vector3.up, Vector3.zero);
+        float rayDistance;
+        if (groundPlane.Raycast(ray, out rayDistance))
+        {
+            Vector3 point = ray.GetPoint(rayDistance);
+            LookAt(point);
+        }
+    }
+
+    private void LookAt(Vector3 lookPoint)
+    {
+        Vector3 heightCorrectedPoint = new Vector3(lookPoint.x, tf.position.y, lookPoint.z);
+        //tf.LookAt(heightCorrectedPoint);
+
+        Vector3 direction = (heightCorrectedPoint - tf.position).normalized;
+
+        // Вычисляем желаемый поворот
+        Quaternion targetRotation = Quaternion.LookRotation(direction);
+
+        // Плавно поворачиваем персонажа
+        tf.rotation = Quaternion.Slerp(tf.rotation, targetRotation, MoveStats.AimAcceleration * Time.fixedDeltaTime);
+    }
+
+    #endregion
 }

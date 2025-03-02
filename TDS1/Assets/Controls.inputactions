@@ -24,7 +24,7 @@
                     "initialStateCheck": true
                 },
                 {
-                    "name": "Direct",
+                    "name": "Aim",
                     "type": "PassThrough",
                     "id": "e01e8239-0974-4b4f-8eef-e9d5d7a4ed0a",
                     "expectedControlType": "Vector2",
@@ -107,7 +107,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Direct",
+                    "action": "Aim",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

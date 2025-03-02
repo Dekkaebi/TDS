@@ -8,7 +8,7 @@ public class InputManager : MonoBehaviour
     public static PlayerInput PlayerInput;
 
     public static Vector2 Movement;
-    public static Vector2 MousePosition;
+    public static Vector2 Aim;
     public static bool RunIsHeld;
 
     private InputAction _moveAction;
@@ -20,14 +20,14 @@ public class InputManager : MonoBehaviour
         PlayerInput = GetComponent<PlayerInput>();
 
         _moveAction = PlayerInput.actions["Move"];
-        _directAction = PlayerInput.actions["Direct"];
+        _directAction = PlayerInput.actions["Aim"];
         _runAction = PlayerInput.actions["Run"];
     }
 
     private void Update()
     {
         Movement = _moveAction.ReadValue<Vector2>();
-        MousePosition = _directAction.ReadValue<Vector2>();
+        Aim = _directAction.ReadValue<Vector2>();
 
         RunIsHeld = _runAction.IsPressed();
     }
