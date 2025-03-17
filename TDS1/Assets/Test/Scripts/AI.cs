@@ -4,19 +4,21 @@ using UnityEngine.AI;
 
 public class AI : MonoBehaviour
 {
-    public Transform player; // Трансформ игрока
-    private NavMeshAgent agent; // Агент навигации
+    private Transform _player;
+    public Transform player; // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
+    private NavMeshAgent agent; // пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 
     void Start()
     {
-        // Получаем компонент NavMeshAgent
+        // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ NavMeshAgent
         agent = GetComponent<NavMeshAgent>();
+        _player = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
     }
 
     void Update()
     {
-        // Устанавливаем цель для агента
-        agent.SetDestination(player.position);
+        // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
+        agent.SetDestination(_player.position);
     }
 }
 

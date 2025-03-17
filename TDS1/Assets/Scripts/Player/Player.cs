@@ -10,6 +10,7 @@ public class Player : MonoBehaviour
     public PlayerMovementStats MoveStats;
     [SerializeField] private Collider _feetColl;
     [SerializeField] private Collider _bodyColl;
+    [SerializeField] private Gun _gun;
 
     [Header("FX")] 
     public GameObject JumpParticles;
@@ -81,6 +82,12 @@ public class Player : MonoBehaviour
         else
         {
             Move(MoveStats.AirAcceleration, MoveStats.AirDeceleration, InputManager.Movement);
+        }
+
+        // Shooting
+        if (InputManager.ShootIsHeld)
+        {
+            Shoot();
         }
     }
 
@@ -511,6 +518,20 @@ public class Player : MonoBehaviour
 
         // Плавно поворачиваем персонажа
         tf.rotation = Quaternion.Slerp(tf.rotation, targetRotation, MoveStats.AimAcceleration * Time.fixedDeltaTime);
+    }
+
+    #endregion
+
+    #region Shoot
+    
+    private void Shoot()
+    {   
+        _gun.Shoot();
+
+        if (MoveStats.ShootDebug)
+        {
+            _gun.DebugShoot();
+        }
     }
 
     #endregion

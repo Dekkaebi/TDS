@@ -10,10 +10,12 @@ public class InputManager : MonoBehaviour
     public static Vector2 Movement;
     public static Vector2 Aim;
     public static bool RunIsHeld;
+    public static bool ShootIsHeld;
 
     private InputAction _moveAction;
     private InputAction _directAction;
     private InputAction _runAction;
+    private InputAction _shootAction;
 
     private void Awake()
     {
@@ -22,6 +24,7 @@ public class InputManager : MonoBehaviour
         _moveAction = PlayerInput.actions["Move"];
         _directAction = PlayerInput.actions["Aim"];
         _runAction = PlayerInput.actions["Run"];
+        _shootAction = PlayerInput.actions["Shoot"];
     }
 
     private void Update()
@@ -30,5 +33,6 @@ public class InputManager : MonoBehaviour
         Aim = _directAction.ReadValue<Vector2>();
 
         RunIsHeld = _runAction.IsPressed();
+        ShootIsHeld = _shootAction.IsPressed();
     }
 }

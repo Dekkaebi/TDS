@@ -16,6 +16,9 @@ public class PlayerMovementStats : ScriptableObject
    [Header("Run")]
    [Range(1f, 100f)] public float MaxRunSpeed = 20f;
 
+   [Header("Debug")]
+   public bool ShootDebug = false;
+
    [Header("Grounded/Collision Checks")]
    public LayerMask GroundLayer;
    public float GroundDetectionRayLength = 0.02f;

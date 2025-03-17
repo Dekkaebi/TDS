@@ -5,13 +5,20 @@ using UnityEngine.Audio;
 public class Gun : MonoBehaviour {
 
     public LayerMask collisianMask;
-    public float rpm; // кол-во выстрелов в минуту
+    public float rpm; // пїЅпїЅпїЅ-пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
     public float damage = 5;
 
+    [Header("FX")]
+    public ParticleSystem ShootFlashParticles;
+
+    [Header("")]
     public Transform spawn;
 
     private float secondBetweenShots;
     private float nextShootTime;
+    private bool _canShoot = true;
+
+    private float shotDistance = 20; // Distance shooting
 
     private void Start() {
         secondBetweenShots = 60 / rpm; 
@@ -21,28 +28,34 @@ public class Gun : MonoBehaviour {
         if (CanShoot()) {
             Ray ray = new Ray(spawn.position, spawn.forward);
             RaycastHit hit;
-            float shotDistance = 20;
+            ShootFlashParticles.Play();
 
-            if (Physics.Raycast(ray, out hit, shotDistance)) // коллизия 
+            if (Physics.Raycast(ray, out hit, shotDistance)) // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ 
             {
-                shotDistance = hit.distance;
+                //shotDistance = hit.distance;
 
                 if (hit.collider.GetComponent<Entity>()) {
                     hit.collider.GetComponent<Entity>().TakeDamage(damage);
                 }
             }
-            nextShootTime = Time.time + secondBetweenShots;
-            Debug.DrawRay(ray.origin, ray.direction * shotDistance, Color.red, 1); // проверка стрельбы(включи Gizmo)
+            nextShootTime = secondBetweenShots;
+            _canShoot = false;
         }
     }
-    // проверка, возможен ли следующий выстрел
+
+    public void DebugShoot() // debug func
+    {
+        Ray ray = new Ray(spawn.position, spawn.forward);
+        Debug.DrawRay(ray.origin, ray.direction * shotDistance, Color.red, 1); // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ(пїЅпїЅпїЅпїЅпїЅпїЅ Gizmo)
+    }
+
+    // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
     private bool CanShoot() {
-        bool canShoot = true;
-        
-        if (Time.time < nextShootTime) {
-            canShoot = false;
+        if (nextShootTime <= 0) {
+            _canShoot = true;
         }
-        return canShoot;
+        nextShootTime -= Time.fixedTime;
+        return _canShoot;
     }
     
 
