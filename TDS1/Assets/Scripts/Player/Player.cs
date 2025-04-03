@@ -57,6 +57,9 @@ public class Player : MonoBehaviour
     //coyote time vars
     private float _coyoteTimer;
 
+    // Поворот
+    private float currentRotationSpeed = 0f; // Текущая скорость поворота
+
     private void Awake()
     {
         _rb = GetComponent<Rigidbody>();
@@ -496,28 +499,36 @@ public class Player : MonoBehaviour
 
     void Rotation()
     {
-        Ray ray = Camera.main.ScreenPointToRay(InputManager.Aim);
-        Plane groundPlane = new Plane(Vector3.up, Vector3.zero);
-        float rayDistance;
-        if (groundPlane.Raycast(ray, out rayDistance))
-        {
-            Vector3 point = ray.GetPoint(rayDistance);
-            LookAt(point);
-        }
+        Vector3 mousePosition = InputManager.Aim;
+        mousePosition.z = Camera.main.transform.position.y; // Устанавливаем высоту камеры
+        Vector3 worldPosition = Camera.main.ScreenToWorldPoint(mousePosition);
+
+        LookAt(worldPosition);
     }
 
     private void LookAt(Vector3 lookPoint)
     {
         Vector3 heightCorrectedPoint = new Vector3(lookPoint.x, tf.position.y, lookPoint.z);
-        //tf.LookAt(heightCorrectedPoint);
-
         Vector3 direction = (heightCorrectedPoint - tf.position).normalized;
 
-        // Вычисляем желаемый поворот
-        Quaternion targetRotation = Quaternion.LookRotation(direction);
+        if (direction.magnitude > 0.1f)
+        {
+            Quaternion targetRotation = Quaternion.LookRotation(direction);
 
-        // Плавно поворачиваем персонажа
-        tf.rotation = Quaternion.Slerp(tf.rotation, targetRotation, MoveStats.AimAcceleration * Time.fixedDeltaTime);
+            // Плавное наращивание скорости с учётом максимальной скорости
+            float acceleration = MoveStats.AimAcceleration * Time.deltaTime;
+            currentRotationSpeed = Mathf.MoveTowards(currentRotationSpeed, MoveStats.MaxRotationSpeed, acceleration);
+
+            // Ограничение значения currentRotationSpeed в диапазоне [0, 1]
+            float rotationFactor = Mathf.Clamp(currentRotationSpeed / MoveStats.MaxRotationSpeed, 0f, 1f);
+
+            // Плавный поворот
+            tf.rotation = Quaternion.Slerp(tf.rotation, targetRotation, rotationFactor);
+        }
+        else
+        {
+            currentRotationSpeed = 0f; // Останавливаем скорость при отсутствии движения
+        }
     }
 
     #endregion

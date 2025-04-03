@@ -4,7 +4,8 @@ using UnityEngine;
 public class PlayerMovementStats : ScriptableObject
 {
    [Header("Aim")]
-   [Range(1f, 100f)] public float AimAcceleration = 10f;
+   [Range(0f, 1f)] public float AimAcceleration = 10f;
+   [Range(1f, 100f)] public float MaxRotationSpeed = 3f; // Максимальная скорость поворота
 
    [Header("Walk")]
    [Range(1f, 100f)] public float MaxWalkSpeed = 12.5f;

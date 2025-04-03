@@ -6240,7 +6240,7 @@ PrefabInstance:
       objectReference: {fileID: 1148886872}
     - target: {fileID: 6253374421362813101, guid: 8897ffcf0c6d60e43b8a1d0821390eb0, type: 3}
       propertyPath: m_IsTrigger
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8636184444030867309, guid: 8897ffcf0c6d60e43b8a1d0821390eb0, type: 3}
       propertyPath: m_LocalPosition.x
