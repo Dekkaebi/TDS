@@ -3,6 +3,7 @@ using System.Collections;
 using System;
 using Unity.VisualScripting;
 using UnityEngine.InputSystem;
+using Unity.Android.Gradle.Manifest;
 
 [RequireComponent (typeof (CharacterController))]
 public class PlayerController : MonoBehaviour {
@@ -11,16 +12,19 @@ public class PlayerController : MonoBehaviour {
     public float walkSpeed = 5;
     public float runSpeed = 8;
     private float acceleration = 5;
+    public float Speed;
 
     private Quaternion targetRotation;
     private Vector3 Velocity;
 
     public Gun gun;
     private CharacterController controller;
+    private Animator animator;
     private Camera cam;
 
     void Start() {
         controller = GetComponent<CharacterController>();
+        animator = GetComponent<Animator>();
         cam = Camera.main;
     }
 
@@ -45,7 +49,9 @@ public class PlayerController : MonoBehaviour {
         motion *= (Mathf.Abs(input.x) == 1 && Mathf.Abs(input.z) == 1) ? .7f : 1; // отсутствие ускорения при движении под угом
         motion *= (Input.GetButton("Run")) ? runSpeed : walkSpeed;
         motion += Vector3.up * -8;
-
+        //animator.SetFloat("Speed", Mathf.Sqrt(motion.x * motion.x + motion.z * motion.z));
         controller.Move(motion * Time.deltaTime);
+
     }
+
 }

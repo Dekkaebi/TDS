@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class NPCMeleeAttack : CharacterStat
+public class NPCMeleeAttack : MonoBehaviour
 {
     public float attackRange = 2f;  // Радиус атаки
     public float attackDamage = 10f;  // Урон атаки
