@@ -9,7 +9,7 @@ public class Gun : MonoBehaviour {
     public float damage = 5;
 
     [Header("FX")]
-    public ParticleSystem ShootFlashParticles;
+    //public ParticleSystem ShootFlashParticles;
 
     [Header("")]
     public Transform spawn;
@@ -28,11 +28,11 @@ public class Gun : MonoBehaviour {
         if (CanShoot()) {
             Ray ray = new Ray(spawn.position, spawn.forward);
             RaycastHit hit;
-            ShootFlashParticles.Play();
-
+            //ShootFlashParticles.Play();
+            Debug.DrawRay(ray.origin, ray.direction * shotDistance, Color.red, 1);
             if (Physics.Raycast(ray, out hit, shotDistance)) // �������� 
             {
-                //shotDistance = hit.distance;
+                shotDistance = hit.distance;
 
                 if (hit.collider.GetComponent<Entity>()) {
                     hit.collider.GetComponent<Entity>().TakeDamage(damage);
