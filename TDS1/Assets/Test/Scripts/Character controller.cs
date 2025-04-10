@@ -3,7 +3,6 @@ using System.Collections;
 using System;
 using Unity.VisualScripting;
 using UnityEngine.InputSystem;
-using Unity.Android.Gradle.Manifest;
 
 [RequireComponent (typeof (CharacterController))]
 public class PlayerController : MonoBehaviour {
@@ -34,9 +33,9 @@ public class PlayerController : MonoBehaviour {
             gun.Shoot();
         }
     }
-    void ControlMouse() //контроллер через движение мыши + WASD
+    void ControlMouse() //пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ + WASD
     {
-        // движение мыши, разворот персонажа
+        // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
         Vector3 mousePos = Input.mousePosition;
         mousePos = cam.ScreenToWorldPoint(new Vector3(mousePos.x, mousePos.y, cam.transform.position.y - transform.position.y));                                                   
         targetRotation = Quaternion.LookRotation(mousePos - new Vector3(transform.position.x, 0, transform.position.z));                                    
@@ -46,7 +45,7 @@ public class PlayerController : MonoBehaviour {
         Vector3 input = new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical"));
         Velocity = Vector3.MoveTowards(Velocity, input, acceleration * Time.deltaTime);
         Vector3 motion = Velocity;
-        motion *= (Mathf.Abs(input.x) == 1 && Mathf.Abs(input.z) == 1) ? .7f : 1; // отсутствие ускорения при движении под угом
+        motion *= (Mathf.Abs(input.x) == 1 && Mathf.Abs(input.z) == 1) ? .7f : 1; // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅ
         motion *= (Input.GetButton("Run")) ? runSpeed : walkSpeed;
         motion += Vector3.up * -8;
         //animator.SetFloat("Speed", Mathf.Sqrt(motion.x * motion.x + motion.z * motion.z));
